@@ -1,0 +1,83 @@
+{
+  "name": "epubread",
+  "version": "1.0.1",
+  "description": "Epub Management Tool",
+  "author": "epubread Developer",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron": "npx electron .",
+    "electron-dev": "npx electron . --dev",
+    "electron-build": "npm run build && npx electron-builder",
+    "dist": "npm run build && npx electron-builder --publish=never",
+    "exe": "npx electron-builder --publish=never",
+    "rebuild-native": "npx electron-builder install-app-deps",
+    "rebuild-electron": "electron-rebuild -f -w better-sqlite3"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.10",
+    "better-sqlite3": "^12.2.0",
+    "electron-log": "^5.1.5",
+    "electron-updater": "^6.2.1",
+    "iconv-lite": "^0.6.3",
+    "naive-ui": "^2.34.4",
+    "pinia": "^2.1.6",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.0.1",
+    "@vicons/ionicons5": "^0.12.0",
+    "@vitejs/plugin-vue": "^4.3.4",
+    "autoprefixer": "^10.4.21",
+    "electron": "^28.0.0",
+    "electron-builder": "^26.0.12",
+    "portfinder": "^1.0.37",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.16",
+    "terser": "^5.43.1",
+    "vite": "^4.4.9",
+    "wait-on": "^7.0.0"
+  },
+  "build": {
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "piercezzs",
+        "repo": "epubread"
+      }
+    ],
+    "appId": "com.epubread.app",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "node_modules/**/*"
+    ],
+    "extraMetadata": {
+      "main": "electron/main.js"
+    },
+    "asar": false,
+    "compression": "normal",
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "epubread"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆形 -->
+  <circle cx="16" cy="16" r="15" fill="#1890ff" stroke="#ffffff" stroke-width="2"/>
+  
+  <!-- 相机图标 -->
+  <rect x="8" y="12" width="16" height="10" rx="2" fill="#ffffff"/>
+  <circle cx="16" cy="17" r="3" fill="#1890ff"/>
+  <rect x="18" y="10" width="4" height="2" rx="1" fill="#ffffff"/>
+  
+  <!-- 闪光灯 -->
+  <circle cx="22" cy="14" r="1" fill="#ffffff"/>
+</svg>
+
