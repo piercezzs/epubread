@@ -7,8 +7,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
     onUpdateAvailable: (callback) => ipcRenderer.on('update_available', callback),
     onUpdateDownloaded: (callback) => ipcRenderer.on('update_downloaded', callback),
     onDownloadProgress: (callback) => ipcRenderer.on('download_progress', callback),
+    onUpdateNotAvailable: (callback) => ipcRenderer.on('update_not_available', callback),
+    onUpdateError: (callback) => ipcRenderer.on('update_error', callback),
+    onCheckingForUpdate: (callback) => ipcRenderer.on('update_checking', callback),
+    checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
     // 系统信息
-    getVersion: () => process.versions.electron,
+    getAppVersion: () => ipcRenderer.invoke('get-app-version'),
     getPlatform: () => process.platform,
 
     // 清理事件监听器（保留）

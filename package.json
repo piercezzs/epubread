@@ -1,6 +1,6 @@
 {
   "name": "epubread",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Epub Management Tool",
   "author": "epubread Developer",
   "main": "electron/main.js",
@@ -42,11 +42,14 @@
     "wait-on": "^7.0.0"
   },
   "build": {
+    "productName": "epubread",
     "publish": [
       {
         "provider": "github",
         "owner": "piercezzs",
-        "repo": "epubread"
+        "repo": "epubread",
+        "releaseType": "release",
+        "publishAutoUpdate": true
       }
     ],
     "appId": "com.epubread.app",
@@ -64,14 +67,17 @@
     "asar": false,
     "compression": "normal",
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "artifactName": "${productName} Setup ${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "epubread"
+      "shortcutName": "epubread",
+      "perMachine": false,
+      "allowElevation": true
     },
     "mac": {
       "target": "dmg"

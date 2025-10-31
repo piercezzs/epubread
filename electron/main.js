@@ -907,6 +907,11 @@ app.whenReady().then(async () => {
     log.transports.file.level = 'info'
     autoUpdater.logger = log
 
+    autoUpdater.on('checking-for-update', () => {
+      log.info('Checking for update...');
+      mainWindow.webContents.send('update_checking');
+    })
+
     autoUpdater.on('update-available', (info) => {
       log.info('Update available.', info)
       mainWindow.webContents.send('update_available')
@@ -914,13 +919,16 @@ app.whenReady().then(async () => {
 
     autoUpdater.on('update-not-available', (info) => {
       log.info('Update not available.', info)
+      mainWindow.webContents.send('update_not_available')
     })
 
     autoUpdater.on('error', (err) => {
       log.error('Error in auto-updater. ' + err)
+      mainWindow.webContents.send('update_error', err.message)
     })
 
     autoUpdater.on('download-progress', (progressObj) => {
+      log.info(`Download speed: ${progressObj.bytesPerSecond}, progress: ${progressObj.percent}%`)
       mainWindow.webContents.send('download_progress', progressObj)
     })
 
@@ -1030,6 +1038,20 @@ ipcMain.handle('close-window', () => {
   if (mainWindow) {
     mainWindow.close()
   }
+})
+
+ipcMain.handle('get-app-version', () => {
+  return app.getVersion()
+})
+
+ipcMain.handle('check-for-updates', () => {
+  if (isDev) {
+    log.info('Skipping update check in development mode.')
+    mainWindow.webContents.send('update_not_available')
+    return
+  }
+  log.info('Manual update check triggered.')
+  autoUpdater.checkForUpdates()
 })
 
 ipcMain.handle('restart_app', () => {

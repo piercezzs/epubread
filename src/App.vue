@@ -49,13 +49,28 @@
   <n-modal v-model:show="showUpdateModal" :mask-closable="false">
     <n-card
       style="width: 400px"
-      :title="updateDownloaded ? '有新版本可用' : '正在下载更新'"
+      :title="
+        updateError
+          ? '更新出错'
+          : updateDownloaded
+          ? '有新版本可用'
+          : '正在下载更新'
+      "
       :bordered="false"
       size="huge"
       role="dialog"
       aria-modal="true"
     >
-      <div v-if="!updateDownloaded">
+      <div v-if="updateError">
+        <p>下载更新时遇到问题：</p>
+        <p>
+          <strong>{{ updateError }}</strong>
+        </p>
+        <n-button @click="showUpdateModal = false" style="margin-top: 20px">
+          关闭
+        </n-button>
+      </div>
+      <div v-else-if="!updateDownloaded">
         <n-progress type="line" :percentage="downloadProgress" />
         <p style="text-align: center; margin-top: 10px">请稍候...</p>
       </div>
@@ -103,11 +118,14 @@ const navigateTo = (path) => {
 const showUpdateModal = ref(false);
 const downloadProgress = ref(0);
 const updateDownloaded = ref(false);
+const updateError = ref(null);
 
 onMounted(() => {
   if (window.electronAPI) {
     window.electronAPI.onUpdateAvailable(() => {
       showUpdateModal.value = true;
+      updateDownloaded.value = false;
+      updateError.value = null;
     });
 
     window.electronAPI.onDownloadProgress((_event, progressObj) => {
@@ -116,6 +134,13 @@ onMounted(() => {
 
     window.electronAPI.onUpdateDownloaded(() => {
       updateDownloaded.value = true;
+      updateError.value = null;
+    });
+
+    window.electronAPI.onUpdateError((_event, err) => {
+      updateError.value = err;
+      updateDownloaded.value = false; // Stay in modal to show error
+      showUpdateModal.value = true; // Show modal on error
     });
   }
 });
