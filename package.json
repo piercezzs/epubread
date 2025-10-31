@@ -68,7 +68,7 @@
     "compression": "normal",
     "win": {
       "target": "nsis",
-      "artifactName": "${productName} Setup ${version}.${ext}"
+      "artifactName": "${productName}-Setup-${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,
